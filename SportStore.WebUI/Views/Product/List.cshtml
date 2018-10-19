@@ -1,0 +1,27 @@
+﻿<!--Step 2: typized view-->
+@model List<SportStore.Domain.Entity.Product>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>List</title>
+</head>
+<body>
+    <div>
+        Products:
+    </div>
+    <div>
+        @foreach (var product in Model)
+        {
+            <div>
+                <span>Product:</span> @product.Name ; <span>Price:</span> @product.Price
+            </div>
+        }
+        </div>
+</body>
+</html>
