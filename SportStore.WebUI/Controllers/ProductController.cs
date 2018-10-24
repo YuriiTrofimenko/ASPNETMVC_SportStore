@@ -5,14 +5,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using SportStore.WebUI.Models;
 
 namespace SportStore.WebUI.Controllers
 {
     public class ProductController : Controller
     {
         private IProductRepository rep;
-        private int pageSize = 2;
-        public ProductController(IProductRepository _rep) {
+        private const int pageSize = 2;
+        public ProductController(IProductRepository _rep)
+        {
             rep = _rep;
         }
         // GET: Product
@@ -35,15 +37,40 @@ namespace SportStore.WebUI.Controllers
             return View(rep.Products.ToList());
         }*/
 
-        public ViewResult List(int page = 1)
+        public ViewResult List(string category, int page = 1)
         {
-            return View(
+            /*return View(
                 rep.Products
                 .OrderBy(p => p.Category)
                 .ThenBy(p => p.Price)
                 .Skip((page * pageSize) - pageSize)
                 .Take(pageSize)
                 .ToList()
+            );*/
+            return View(
+                new ProductsListViewModel()
+                {
+                    Products =
+                        rep.Products
+                        .Where(p => category == null
+                            || p.Category == category)
+                        .OrderBy(p => p.Category)
+                        .ThenBy(p => p.Price)
+                        .Skip((page * pageSize) - pageSize)
+                        .Take(pageSize)
+                        .ToList()
+                    ,
+                    PagingInfo =
+                        new PagingInfo()
+                        {
+                            CurrentPage = page
+                            ,
+                            ItemsPerPage = pageSize
+                            ,
+                            TotalItems = rep.Products.Count()
+                        }
+                    , CurrentCategory = category
+                }
             );
         }
     }

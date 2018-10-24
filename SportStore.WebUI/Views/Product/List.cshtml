@@ -1,7 +1,8 @@
 ﻿<!--Step 2: typized view-->
-@model List<SportStore.Domain.Entity.Product>
+@*@model List<SportStore.Domain.Entity.Product>*@
+@model SportStore.WebUI.Models.ProductsListViewModel
 @{
-    Layout = null;
+    Layout = "~/Views/Shared/_Layout1.cshtml";
 }
 
 <!DOCTYPE html>
@@ -16,12 +17,19 @@
         Products:
     </div>
     <div>
-        @foreach (var product in Model)
+        @*@foreach (var product in Model)
         {
         <div>
             <span>Category:</span> @product.Category ; <span>Product:</span> @product.Name ; <span>Price:</span> @product.Price
         </div>
+        }*@
+        @foreach (var p in Model.Products)
+        {
+            Html.RenderPartial("ProductSummary", p);
         }
+        <div class="pager">
+            @Html.PageLinks(Model.PagingInfo, x => Url.Action("List", new { page = x }))
         </div>
+    </div>
 </body>
 </html>
